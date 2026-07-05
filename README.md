@@ -30,6 +30,8 @@ Initial scope:
 
 Large raw image files should not be committed to the repository. The `data/` directory contains placeholders only.
 
+See [data notes](docs/data.md) for dataset assumptions and the first metadata-inspection milestone.
+
 ## Planned Method
 
 1. Inspect RxRx1 metadata and image structure.
@@ -64,6 +66,10 @@ Representation diagnostics:
 - Retrieval image panels
 - Batch distribution plots
 
+## Setup
+
+See [setup instructions](docs/setup.md).
+
 ## Repository Structure
 
 ```text
@@ -93,3 +99,5 @@ tests/                           Lightweight tests for data and transforms
 - RxRx1: A Dataset for Evaluating Experimental Batch Correction Methods
 - Cell Painting Gallery: an open resource for image-based profiling
 - MorphoHELM: A Comprehensive Benchmark for Evaluating Representations for Microscopy-Based Morphology Assays
+
+

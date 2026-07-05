@@ -7,7 +7,7 @@ name = "cell-painting-perturbation-profiling"
 version = "0.1.0"
 description = "Batch-robust Cell Painting embeddings for perturbation profiling."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.14"
 authors = [
   { name = "Shane Thomas" }
 ]
@@ -28,9 +28,13 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest"]
 
+[project.scripts]
+inspect-cell-painting-metadata = "cell_painting_profiling.data.inspect_metadata:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+
