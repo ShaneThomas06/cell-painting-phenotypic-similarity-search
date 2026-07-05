@@ -1,0 +1,17 @@
+dataset:
+  name: rxrx1
+  raw_dir: data/raw
+  metadata_path: data/raw/metadata.csv
+  image_root: data/raw/images
+
+subset:
+  cell_type: null
+  max_perturbations: 100
+  min_images_per_perturbation: 10
+  held_out_batches: []
+  random_seed: 42
+
+images:
+  image_size: 224
+  channels: all
+  normalize: true
