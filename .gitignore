@@ -30,3 +30,4 @@ wandb/
 *.ckpt
 
 .env
+*.egg-info/
