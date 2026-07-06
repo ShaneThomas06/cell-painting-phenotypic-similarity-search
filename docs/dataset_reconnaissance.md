@@ -137,6 +137,8 @@ Before downloading images, inspect metadata for these candidates in order:
 
 The first dataset selected for image download should be the smallest candidate that supports mechanism or target recovery analysis.
 
+Initial metadata reconnaissance has begun for cpg0002-jump-scope; see [cpg0002 initial findings](cpg0002_initial_findings.md).
+
 ## Non-Negotiables
 
 - Do not download full multi-terabyte datasets locally.
@@ -151,3 +153,4 @@ The first dataset selected for image download should be the smallest candidate t
 - JUMP Cell Painting Hub.
 - JUMP Cell Painting datasets repository.
 - Dataset-specific papers for whichever dataset is selected for the first experiment.
+

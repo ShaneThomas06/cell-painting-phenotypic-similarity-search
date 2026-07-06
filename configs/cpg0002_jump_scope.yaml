@@ -1,0 +1,31 @@
+dataset:
+  id: cpg0002-jump-scope
+  bucket: cellpainting-gallery
+  source: source_4
+
+metadata_sources:
+  compound_metadata:
+    s3_key: cpg0002-jump-scope/source_4/workspace/metadata/external_metadata/JUMP-MOA_compound_metadata.tsv
+    local_path: data/raw/cpg0002-jump-scope/metadata/JUMP-MOA_compound_metadata.tsv
+  selected_platemap:
+    s3_key: cpg0002-jump-scope/source_4/workspace/metadata/platemaps/Scope1_Yokogawa_US_20X_6Ch_BRO0117059/platemap/JUMP-MOA_compound_platemap.txt
+    local_path: data/raw/cpg0002-jump-scope/metadata/JUMP-MOA_compound_platemap.txt
+  selected_load_data:
+    s3_key: cpg0002-jump-scope/source_4/workspace/load_data_csv/2020_11_16_Scope1_YokogawaUS/BRO0117059_20X/load_data.csv
+    local_path: data/raw/cpg0002-jump-scope/load_data/BRO0117059_20X/load_data.csv
+
+selected_plate:
+  microscope_context: Scope1_Yokogawa_US_20X_6Ch
+  plate: BRO0117059_20X
+  rationale: Start with one six-channel plate to avoid mixing microscope settings in the first CNN experiment.
+
+join_keys:
+  load_data_well: Metadata_Well
+  platemap_well: well_position
+  compound_id: broad_sample
+
+label_columns:
+  compound_name: pert_iname
+  mechanism_of_action: moa
+  smiles: smiles
+  perturbation_type: pert_type

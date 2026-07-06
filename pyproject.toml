@@ -30,6 +30,7 @@ dev = ["pytest"]
 
 [project.scripts]
 inspect-cell-painting-metadata = "cell_painting_profiling.data.inspect_metadata:main"
+list-cell-painting-s3-prefix = "cell_painting_profiling.data.s3_listing:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -37,5 +38,4 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
-
 
