@@ -1,61 +1,96 @@
 # Data Notes
 
-## Primary Dataset
+## Primary Data Direction
 
-This project starts with RxRx1, Recursion's public Cell Painting benchmark for studying experimental batch effects in biological image screens.
+This project should prioritize Cell Painting datasets with both microscopy images and perturbation annotations that support mechanism or target interpretation.
 
-Official sources:
+Preferred sources:
 
-- Dataset page: https://rxrx.ai/rxrx1
-- Kaggle competition page: https://www.kaggle.com/c/recursion-cellular-image-classification
-- Paper: https://arxiv.org/abs/2301.05768
+- Cell Painting Gallery
+- JUMP Cell Painting Consortium data
 
-## Why RxRx1 Fits This Project
+Fallback or benchmark source:
 
-RxRx1 was designed around the same problem this project studies: distinguishing biological perturbation signal from technical batch variation.
+- RxRx1, useful for batch-effect-aware representation testing but not ideal as the central project because it is closely tied to a known classification benchmark.
 
-Important properties for the project:
+## Why Metadata Matters
 
-- Images are six-channel Cell Painting microscopy images.
-- Each image represents one imaging site from one well.
-- Each experiment corresponds to a batch-like context.
-- The biological label is siRNA perturbation identity.
-- Held-out experiment evaluation is central to the benchmark.
+The project is a phenotypic similarity search workflow. Images are used to learn morphology, but metadata is needed to interpret whether visually similar perturbations share biological meaning.
 
-## Initial Scope
-
-The first analysis should not use the full dataset immediately. Start with:
-
-- one cell type
-- a subset of perturbations with enough images across batches
-- a held-out batch split
-- 224 x 224 image inputs for the baseline model
-
-## Expected Metadata Columns
-
-The starter code expects a normalized metadata table with at least these columns:
+Useful metadata fields include:
 
 ```text
 image_path
-perturbation
+compound_id
+compound_name
+perturbation_id
+perturbation_type
+mechanism_of_action
+target
+pathway
+smiles
 batch
-cell_type
+plate
+well
+site
+cell_line
+channel
 ```
 
-The `image_path` value should be relative to the configured image root.
+Not every dataset will contain every field. The first data milestone is to inspect available metadata and decide which evaluation questions are feasible.
+
+## Initial Dataset Selection Criteria
+
+A strong first subset should have:
+
+- enough replicate images per perturbation
+- multiple perturbations per mechanism or target class
+- enough metadata to compare visual similarity with known biology
+- manageable image volume for local development
+- batch, plate, or experiment labels for technical-variation checks
+
+## Project-Level Unit Of Analysis
+
+The model may process individual images, but the main scientific object is the perturbation-level fingerprint.
+
+```text
+image embeddings -> replicate aggregation -> perturbation fingerprint -> nearest-neighbor search
+```
+
+This avoids treating single fields of view as independent biological conclusions.
 
 ## First Data Milestone
 
-Before model training, run metadata inspection and answer:
+Before model training, metadata inspection should answer:
 
-1. How many rows are available?
-2. Which columns are present?
-3. How many perturbations are present?
-4. How many batches are present?
-5. How many images exist per cell type?
-6. Which cell type is best for the first subset?
-7. Which batches should be held out for testing?
+1. How many image records are available?
+2. Which image path or channel columns are present?
+3. Which perturbation identifiers are available?
+4. How many perturbations have mechanism, target, or pathway labels?
+5. How many replicate images exist per perturbation?
+6. Are batch, plate, well, site, or cell-line fields available?
+7. Which subset supports the strongest retrieval evaluation?
+
+## Evaluation-Ready Metadata
+
+For the first retrieval benchmark, the ideal normalized metadata table should include at least:
+
+```text
+image_path
+perturbation_id
+batch
+```
+
+For mechanism discovery analysis, it should also include one or more of:
+
+```text
+mechanism_of_action
+target
+pathway
+compound_name
+smiles
+```
 
 ## Biological Caution
 
-RxRx1 uses siRNA perturbations, and siRNAs can have off-target effects. Describe labels as perturbation or siRNA identity, not as definitive gene-function effects.
+Morphological similarity is evidence of related cellular response, not proof of shared direct target. Final interpretations should distinguish between direct mechanism, downstream pathway convergence, toxicity response, and technical artifact.

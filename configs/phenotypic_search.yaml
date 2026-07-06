@@ -1,0 +1,55 @@
+experiment:
+  name: phenotypic_similarity_search
+  output_dir: reports
+  random_seed: 42
+
+data:
+  metadata_path: data/raw/metadata.csv
+  image_root: data/raw/images
+  image_path_column: image_path
+  perturbation_column: perturbation_id
+  batch_column: batch
+  optional_annotation_columns:
+    - compound_name
+    - mechanism_of_action
+    - target
+    - pathway
+    - smiles
+    - perturbation_type
+    - cell_line
+
+subset:
+  max_perturbations: 250
+  min_images_per_perturbation: 8
+  require_annotation_column: mechanism_of_action
+  holdout_batches: []
+
+images:
+  image_size: 224
+  channels: all
+  composite_strategy: channel_stack
+  normalize: true
+
+model:
+  encoder: resnet18
+  pretrained: true
+  embedding_dim: 512
+  num_input_channels: 6
+
+fingerprints:
+  aggregation: mean
+  normalize_embeddings: true
+
+retrieval:
+  similarity_metric: cosine
+  top_k: [1, 5, 10, 20]
+  evaluate_shared_annotations:
+    - mechanism_of_action
+    - target
+    - pathway
+
+analysis:
+  run_umap: true
+  compare_batch_structure: true
+  report_disagreement_cases: true
+  chemistry_similarity_column: smiles

@@ -9,12 +9,21 @@ from cell_painting_profiling.data.dataset import load_metadata
 
 
 DEFAULT_COLUMNS_TO_SUMMARIZE = (
+    "perturbation_id",
     "perturbation",
+    "compound_id",
+    "compound_name",
+    "mechanism_of_action",
+    "target",
+    "pathway",
+    "perturbation_type",
     "batch",
     "cell_type",
+    "cell_line",
     "experiment",
     "plate",
     "well",
+    "site",
 )
 
 
@@ -84,7 +93,7 @@ def inspect_metadata(
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Inspect RxRx1-style Cell Painting metadata."
+        description="Inspect Cell Painting metadata for phenotypic profiling and retrieval analysis."
     )
     parser.add_argument("--metadata", required=True, help="Path to metadata CSV or Parquet.")
     parser.add_argument(
@@ -109,3 +118,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

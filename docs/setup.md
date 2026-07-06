@@ -26,10 +26,11 @@ pytest
 
 ## Metadata Inspection
 
-After downloading or preparing an RxRx1-style metadata table:
+After downloading or preparing a Cell Painting metadata table:
 
 ```bash
 inspect-cell-painting-metadata --metadata data/raw/metadata.csv --output reports/tables/metadata_summary.csv
 ```
 
-Raw RxRx1 image data is large and should stay outside Git history. Keep downloaded data under `data/raw/`, which is ignored except for placeholder files.
+Raw Cell Painting image data is large and should stay outside Git history. Keep downloaded data under `data/raw/`, which is ignored except for placeholder files.
+
