@@ -1,0 +1,61 @@
+candidates:
+  - id: cpg0002-jump-scope
+    role: first_mechanism_recovery_demo
+    priority: 1
+    rationale: Focused JUMP-MOA compound set; likely best first proof-of-concept for mechanism-aware retrieval.
+    expected_strengths:
+      - mechanism_of_action_relevance
+      - manageable_perturbation_count
+      - strong_retrieval_story
+    risks:
+      - microscope_setting_confounding
+      - limited_compound_diversity
+
+  - id: cpg0000-jump-pilot
+    role: first_pipeline_development_candidate
+    priority: 2
+    rationale: Smaller JUMP-related dataset with compounds and genes; useful for developing image loading and embedding workflow.
+    expected_strengths:
+      - mixed_chemical_and_genetic_perturbations
+      - smaller_than_full_jump
+      - compatible_with_jump_ecosystem
+    risks:
+      - may_have_limited_moa_annotations
+      - selective_image_download_required
+
+  - id: cpg0012-wawer-bioactivecompoundprofiling
+    role: discovery_expansion_candidate
+    priority: 3
+    rationale: Large bioactive-compound profiling dataset suitable for morphology-chemistry disagreement analysis.
+    expected_strengths:
+      - strong_drug_discovery_relevance
+      - large_compound_space
+      - useful_for_chemistry_morphology_comparison
+    risks:
+      - metadata_harmonization_required
+      - large_image_volume
+
+  - id: cpg0016-jump
+    role: long_term_primary_dataset
+    priority: 4
+    rationale: Full JUMP dataset is the highest-ceiling resource but too large for the first local experiment.
+    expected_strengths:
+      - largest_public_cell_painting_resource
+      - chemical_and_genetic_perturbations
+      - high_community_credibility
+    risks:
+      - very_large_scale
+      - requires_careful_subsetting
+      - likely_needs_cloud_or_streaming_workflow
+
+  - id: cpg0034-arevalo-su-motive
+    role: annotation_or_interpretation_companion
+    priority: 5
+    rationale: Useful for target-relationship interpretation but not core image CNN work because it contains features, not images.
+    expected_strengths:
+      - drug_target_interaction_focus
+      - compact_feature_level_resource
+      - useful_for_downstream_interpretation
+    risks:
+      - no_raw_images
+      - not_sufficient_for_cnn_image_handling

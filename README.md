@@ -53,7 +53,7 @@ Fallback or benchmarking direction:
 
 The first implementation will inspect available metadata before choosing the final subset. Raw image data should not be committed to the repository.
 
-See [data notes](docs/data.md) for dataset assumptions and the first metadata-inspection milestone.
+See [data notes](docs/data.md) and [dataset reconnaissance](docs/dataset_reconnaissance.md) for dataset assumptions, candidate rankings, and the first metadata-inspection milestone.
 
 ## Planned Method
 
@@ -127,3 +127,4 @@ tests/                           Lightweight tests for data and analysis utiliti
 - JUMP Cell Painting Consortium
 - Cell Painting: a decade of discovery and innovation in cellular imaging
 - Image-based profiling for drug discovery
+
