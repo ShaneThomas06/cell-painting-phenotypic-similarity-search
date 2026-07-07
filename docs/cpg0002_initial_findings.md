@@ -217,3 +217,37 @@ all images were 1994 x 1994 16-bit TIFFs
 ```
 
 This confirms that the cpg0002 metadata, image URLs, local paths, and channel-level download logic are ready for a first multi-channel image loader.
+
+## Multi-Channel CNN Smoke Test
+
+A multi-channel dataset class was added to load one image site as a stacked fluorescence tensor.
+
+Tensor contract:
+
+```text
+one image site -> 5 fluorescence channels -> [5, 224, 224] tensor
+```
+
+Channels used:
+
+```text
+RNA
+Mito
+AGP
+ER
+DNA
+```
+
+A ResNet18 forward-pass smoke test was run with `pretrained=False` to avoid downloading model weights. The goal was not training; it was to verify that real downloaded TIFFs can be loaded, resized, stacked, and passed through a CNN.
+
+Observed forward-pass result:
+
+```text
+image records: 16
+channel rows: 80
+input shape: [4, 5, 224, 224]
+mechanism classes: 4
+output shape: [4, 4]
+```
+
+This confirms the project is ready for the next stage: extracting CNN embeddings from the smoke-test subset, then scaling the workflow to a larger MOA-balanced sample.

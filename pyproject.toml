@@ -35,6 +35,7 @@ normalize-cpg0002-metadata = "cell_painting_profiling.data.normalize_cpg0002:mai
 select-cpg0002-image-subset = "cell_painting_profiling.data.select_image_subset:main"
 download-cell-painting-images = "cell_painting_profiling.data.download_images:main"
 validate-cell-painting-images = "cell_painting_profiling.data.validate_images:main"
+run-cnn-forward-smoke-test = "cell_painting_profiling.training.forward_smoke_test:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

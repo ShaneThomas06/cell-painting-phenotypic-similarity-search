@@ -21,7 +21,7 @@ reports/tables/*
 !reports/figures/.gitkeep
 !reports/tables/.gitkeep
 
-models/
+/models/
 checkpoints/
 runs/
 wandb/
@@ -31,3 +31,4 @@ wandb/
 
 .env
 *.egg-info/
+
