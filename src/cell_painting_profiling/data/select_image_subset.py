@@ -61,6 +61,7 @@ def select_moa_balanced_subset(
 def create_channel_manifest(
     subset: pd.DataFrame,
     channel_columns: tuple[str, ...] = DEFAULT_CHANNEL_COLUMNS,
+    image_root: str = "data/raw/images/cpg0002-jump-scope/smoke_test",
 ) -> pd.DataFrame:
     """Convert a row-per-site subset into a row-per-channel download manifest."""
     rows = []
@@ -77,7 +78,7 @@ def create_channel_manifest(
                     "site": record["site"],
                     "channel": channel,
                     "source_url": record[channel_column],
-                    "local_path": f"data/raw/images/cpg0002-jump-scope/smoke_test/{record['image_record_id']}_{channel}.tif",
+                    "local_path": f"{image_root}/{record['image_record_id']}_{channel}.tif",
                 }
             )
     return pd.DataFrame(rows)
@@ -118,3 +119,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

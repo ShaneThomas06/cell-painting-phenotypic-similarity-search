@@ -53,7 +53,7 @@ Fallback or benchmarking direction:
 
 The first implementation will inspect available metadata before choosing the final subset. Raw image data should not be committed to the repository.
 
-See [data notes](docs/data.md) and [dataset reconnaissance](docs/dataset_reconnaissance.md) for dataset assumptions, candidate rankings, and the first metadata-inspection milestone.
+See [data notes](docs/data.md), [dataset reconnaissance](docs/dataset_reconnaissance.md), and the [baseline CNN plan](docs/baseline_cnn_plan.md) for dataset assumptions, candidate rankings, and baseline-training direction.
 
 ## Planned Method
 
@@ -111,12 +111,13 @@ tests/                           Lightweight tests for data and analysis utiliti
 
 - [x] Project scaffold
 - [x] Python environment and starter tests
-- [ ] Cell Painting metadata inspection
-- [ ] Dataset and subset selection
-- [ ] Image loading and preprocessing
-- [ ] Baseline CNN embedding extraction
-- [ ] Perturbation-level fingerprint aggregation
-- [ ] Phenotypic nearest-neighbor search
+- [x] Cell Painting metadata inspection
+- [x] Dataset and subset selection
+- [x] Image loading and preprocessing
+- [x] Baseline CNN embedding extraction smoke test
+- [x] MOA-balanced baseline training subset
+- [x] Perturbation-level fingerprint aggregation smoke test
+- [x] Phenotypic nearest-neighbor search smoke test
 - [ ] Mechanism and target recovery analysis
 - [ ] Morphology-chemistry disagreement analysis
 - [ ] Final figures and interpretation

@@ -273,3 +273,27 @@ top-3 row-level shared mechanism rate: 0.1667
 ```
 
 This result should not be interpreted as a real biological signal yet. The CNN used random, untrained weights for this smoke test, so weak mechanism recovery is expected. The important result is technical: the project can now load real Cell Painting images, convert them into embeddings, aggregate those embeddings by compound, and run a first phenotypic similarity search.
+
+## Baseline Training Subset
+
+A larger MOA-balanced manifest was generated for the first supervised CNN baseline.
+
+Selection rule:
+
+```text
+8 mechanism-of-action classes
+2 compounds per mechanism
+4 image sites per compound
+5 fluorescence channels per image site
+```
+
+Observed manifest:
+
+```text
+64 image records
+320 channel-level image downloads
+16 compounds
+8 mechanisms
+```
+
+This subset is intentionally balanced so the baseline CNN sees the same number of compounds and image sites for each mechanism. The next step is to download and validate these images, then train a small MOA classifier and use its penultimate layer as the improved embedding.
