@@ -32,6 +32,9 @@ dev = ["pytest"]
 inspect-cell-painting-metadata = "cell_painting_profiling.data.inspect_metadata:main"
 list-cell-painting-s3-prefix = "cell_painting_profiling.data.s3_listing:main"
 normalize-cpg0002-metadata = "cell_painting_profiling.data.normalize_cpg0002:main"
+select-cpg0002-image-subset = "cell_painting_profiling.data.select_image_subset:main"
+download-cell-painting-images = "cell_painting_profiling.data.download_images:main"
+validate-cell-painting-images = "cell_painting_profiling.data.validate_images:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

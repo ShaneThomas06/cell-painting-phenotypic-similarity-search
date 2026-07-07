@@ -170,3 +170,50 @@ Observed output:
 ```
 
 The missing annotations should be treated explicitly. The first retrieval benchmark should filter to rows where `mechanism_of_action` is present, while retaining unannotated/control rows only for quality-control checks.
+
+## Smoke-Test Image Subset
+
+A tiny MOA-balanced image subset was selected from the normalized metadata for image-loading validation.
+
+Selection rule:
+
+```text
+4 mechanism-of-action classes
+2 compounds per mechanism
+2 image sites per compound
+5 fluorescence channels per site
+```
+
+Mechanisms selected:
+
+```text
+HDAC inhibitor
+EGFR inhibitor
+CDK inhibitor
+JAK inhibitor
+```
+
+Compounds selected:
+
+```text
+HDAC inhibitor: RGFP966, romidepsin
+EGFR inhibitor: CP-724714, neratinib
+CDK inhibitor: AMG-925, THZ1
+JAK inhibitor: filgotinib, ruxolitinib
+```
+
+Observed manifest:
+
+```text
+16 image records
+80 channel-level image downloads
+```
+
+Validation result:
+
+```text
+80 / 80 files opened successfully
+all images were 1994 x 1994 16-bit TIFFs
+```
+
+This confirms that the cpg0002 metadata, image URLs, local paths, and channel-level download logic are ready for a first multi-channel image loader.
