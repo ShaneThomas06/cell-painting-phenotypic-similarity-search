@@ -297,3 +297,18 @@ Observed manifest:
 ```
 
 This subset is intentionally balanced so the baseline CNN sees the same number of compounds and image sites for each mechanism. The next step is to download and validate these images, then train a small MOA classifier and use its penultimate layer as the improved embedding.
+
+## Baseline Image Download And Validation
+
+The baseline training manifest was downloaded locally and validated.
+
+Validation result:
+
+```text
+320 / 320 channel image files present
+0 validation failures
+all images opened successfully
+all images were 1994 x 1994 16-bit TIFFs
+```
+
+This means the baseline training subset is now ready for the first supervised CNN training run. The next modeling step is to train a small ResNet18 classifier to predict mechanism-of-action from the 5-channel image tensors.
