@@ -144,3 +144,29 @@ SMILES
 ```
 
 The output should live under `data/processed/` and remain ignored by Git.
+
+## Normalization Script Result
+
+The normalization script successfully joined the selected load-data table, platemap, and compound metadata.
+
+Command pattern:
+
+```bash
+python -m cell_painting_profiling.data.normalize_cpg0002 \
+  --load-data data/raw/cpg0002-jump-scope/load_data/BRO0117059_20X/load_data.csv \
+  --platemap data/raw/cpg0002-jump-scope/metadata/JUMP-MOA_compound_platemap.txt \
+  --compound-metadata data/raw/cpg0002-jump-scope/metadata/JUMP-MOA_compound_metadata.tsv \
+  --output data/processed/cpg0002-jump-scope/BRO0117059_20X_normalized_metadata.csv
+```
+
+Observed output:
+
+```text
+3454 image records
+20 normalized columns
+90 compounds with image records
+47 mechanism-of-action labels
+216 image records without compound/MOA annotations
+```
+
+The missing annotations should be treated explicitly. The first retrieval benchmark should filter to rows where `mechanism_of_action` is present, while retaining unannotated/control rows only for quality-control checks.

@@ -29,3 +29,6 @@ label_columns:
   mechanism_of_action: moa
   smiles: smiles
   perturbation_type: pert_type
+
+outputs:
+  normalized_metadata: data/processed/cpg0002-jump-scope/BRO0117059_20X_normalized_metadata.csv
