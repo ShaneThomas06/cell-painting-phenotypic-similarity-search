@@ -251,3 +251,25 @@ output shape: [4, 4]
 ```
 
 This confirms the project is ready for the next stage: extracting CNN embeddings from the smoke-test subset, then scaling the workflow to a larger MOA-balanced sample.
+
+## First Embedding Retrieval Smoke Test
+
+The smoke-test images were converted into CNN embeddings, then averaged into one compound-level fingerprint per compound.
+
+Plain-language interpretation:
+
+```text
+image pixels -> CNN numbers -> compound fingerprint -> nearest compound search
+```
+
+Observed output:
+
+```text
+16 image-level embeddings
+8 compound-level fingerprints
+24 nearest-neighbor rows
+top-1 shared mechanism rate: 0.0000
+top-3 row-level shared mechanism rate: 0.1667
+```
+
+This result should not be interpreted as a real biological signal yet. The CNN used random, untrained weights for this smoke test, so weak mechanism recovery is expected. The important result is technical: the project can now load real Cell Painting images, convert them into embeddings, aggregate those embeddings by compound, and run a first phenotypic similarity search.

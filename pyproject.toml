@@ -36,6 +36,9 @@ select-cpg0002-image-subset = "cell_painting_profiling.data.select_image_subset:
 download-cell-painting-images = "cell_painting_profiling.data.download_images:main"
 validate-cell-painting-images = "cell_painting_profiling.data.validate_images:main"
 run-cnn-forward-smoke-test = "cell_painting_profiling.training.forward_smoke_test:main"
+extract-cell-painting-embeddings = "cell_painting_profiling.embeddings.extract:main"
+aggregate-compound-fingerprints = "cell_painting_profiling.embeddings.aggregate:main"
+run-compound-retrieval = "cell_painting_profiling.embeddings.run_retrieval:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
