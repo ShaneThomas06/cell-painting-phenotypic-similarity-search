@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import torch
 
 
@@ -18,6 +21,22 @@ def normalize_channel_stack(
     if image.shape[0] != len(mean):
         raise ValueError("Channel count does not match normalization constants")
     return (image - mean_tensor) / std_tensor.clamp_min(1e-8)
+
+
+def load_channel_stats(
+    stats_path: str | Path,
+    channel_order: tuple[str, ...],
+) -> tuple[tuple[float, ...], tuple[float, ...]]:
+    """Load channel mean/std values from a statistics JSON file."""
+    stats = json.loads(Path(stats_path).read_text(encoding="utf-8"))
+    channels = stats.get("channels", {})
+    missing = set(channel_order).difference(channels)
+    if missing:
+        missing_text = ", ".join(sorted(missing))
+        raise ValueError(f"Channel stats are missing channels: {missing_text}")
+    mean = tuple(float(channels[channel]["mean"]) for channel in channel_order)
+    std = tuple(float(channels[channel]["std"]) for channel in channel_order)
+    return mean, std
 
 
 def augment_channel_stack(image: torch.Tensor) -> torch.Tensor:

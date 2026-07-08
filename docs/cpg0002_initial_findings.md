@@ -363,3 +363,21 @@ queries with a shared-mechanism neighbor in top 3: 0.2500
 ```
 
 This improved over the random-initialized 12-site baseline, especially for top-1 retrieval. The model is still not strong, but this is the first result showing that better visual representations can improve mechanism-aware phenotypic retrieval.
+
+## Frozen Pretrained Representation Benchmark
+
+A frozen pretrained ResNet18 was used as a feature extractor without additional supervised training.
+
+Observed retrieval comparison:
+
+```text
+random 12-site fine-tuned top-1 shared mechanism: 0.0625
+pretrained augmented fine-tuned top-1 shared mechanism: 0.1875
+frozen pretrained top-1 shared mechanism: 0.0625
+
+random 12-site queries with shared-mechanism neighbor in top 3: 0.1875
+pretrained augmented fine-tuned queries with shared-mechanism neighbor in top 3: 0.2500
+frozen pretrained queries with shared-mechanism neighbor in top 3: 0.3125
+```
+
+This result supports a more nuanced conclusion: fine-tuning improved the closest match metric, while frozen pretrained features recovered more shared-mechanism neighbors within the top 3. The project should therefore treat representation strategy as a central analysis axis.

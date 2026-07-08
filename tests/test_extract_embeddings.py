@@ -43,3 +43,25 @@ def test_load_trained_embedding_model_returns_512_features(tmp_path):
 
     assert checkpoint["image_size"] == 64
     assert embeddings.shape == (2, 512)
+
+def test_resnet_embedding_model_accepts_pretrained_flag(monkeypatch):
+    calls = {}
+
+    def fake_builder(num_classes, num_input_channels, pretrained):
+        calls["pretrained"] = pretrained
+        return build_resnet18_classifier(
+            num_classes=num_classes,
+            num_input_channels=num_input_channels,
+            pretrained=False,
+        )
+
+    monkeypatch.setattr(
+        "cell_painting_profiling.embeddings.extract.build_resnet18_classifier",
+        fake_builder,
+    )
+
+    model = ResNetEmbeddingModel(num_input_channels=5, pretrained=True)
+
+    assert calls["pretrained"] is True
+    assert model(torch.zeros((1, 5, 64, 64))).shape == (1, 512)
+

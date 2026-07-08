@@ -225,3 +225,28 @@ queries with a shared-mechanism neighbor in top 3: 0.2500
 ```
 
 Compared with the random-initialized 12-site baseline, pretrained features improved validation accuracy from 0.1250 to 0.1667 and top-1 retrieval from 0.0625 to 0.1875. The result is still weak overall, but it supports the main modeling conclusion: representation quality matters more than simply increasing image sites.
+
+## Frozen Pretrained Representation Benchmark
+
+A frozen ImageNet-pretrained ResNet18 was evaluated as a feature extractor without supervised fine-tuning. Channel statistics were computed from the 12-site dataset at the same 96 x 96 input size used for modeling.
+
+Computed channel statistics:
+
+```text
+RNA mean: 0.0236 | std: 0.0228
+Mito mean: 0.0283 | std: 0.0212
+AGP mean: 0.0294 | std: 0.0287
+ER mean: 0.0223 | std: 0.0290
+DNA mean: 0.0096 | std: 0.0206
+```
+
+Representation comparison:
+
+```text
+experiment                         top-1 shared MOA   top-3 row shared MOA   query has shared MOA in top 3
+random 12-site fine-tuned          0.0625             0.0625                0.1875
+pretrained augmented fine-tuned    0.1875             0.0833                0.2500
+frozen pretrained                  0.0625             0.1042                0.3125
+```
+
+The frozen pretrained model did not win on top-1 retrieval, but it recovered the highest number of queries with a shared-mechanism neighbor somewhere in the top 3. This suggests that supervised fine-tuning on the tiny compound-holdout set can sharpen some nearest-neighbor matches, but frozen pretrained features may preserve broader visual structure better.

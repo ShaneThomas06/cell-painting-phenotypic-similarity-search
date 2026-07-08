@@ -13,7 +13,7 @@ from cell_painting_profiling.data.multichannel_dataset import (
     DEFAULT_CHANNEL_ORDER,
     MultiChannelCellPaintingDataset,
 )
-from cell_painting_profiling.data.transforms import ChannelStackTransform
+from cell_painting_profiling.data.transforms import ChannelStackTransform, load_channel_stats
 from cell_painting_profiling.models.encoders import build_resnet18_classifier
 from cell_painting_profiling.training.forward_smoke_test import collate_batch
 
@@ -25,13 +25,14 @@ class ResNetEmbeddingModel(nn.Module):
         self,
         num_input_channels: int = 5,
         classifier: nn.Module | None = None,
+        pretrained: bool = False,
     ) -> None:
         super().__init__()
         if classifier is None:
             classifier = build_resnet18_classifier(
                 num_classes=1,
                 num_input_channels=num_input_channels,
-                pretrained=False,
+                pretrained=pretrained,
             )
         self.features = nn.Sequential(*list(classifier.children())[:-1])
 
@@ -65,25 +66,48 @@ def load_trained_embedding_model(
     return model, checkpoint
 
 
+def build_embedding_transform(
+    normalize: bool,
+    channel_stats_path: str | Path | None = None,
+) -> ChannelStackTransform:
+    mean = None
+    std = None
+    if channel_stats_path is not None:
+        mean, std = load_channel_stats(channel_stats_path, DEFAULT_CHANNEL_ORDER)
+    return ChannelStackTransform(
+        train=False,
+        normalize=normalize,
+        mean=mean or (0.5, 0.5, 0.5, 0.5, 0.5),
+        std=std or (0.25, 0.25, 0.25, 0.25, 0.25),
+    )
+
+
 def extract_image_embeddings(
     manifest: pd.DataFrame,
     image_size: int = 224,
     batch_size: int = 4,
     checkpoint_path: str | Path | None = None,
+    pretrained: bool = False,
+    normalize: bool = False,
+    channel_stats_path: str | Path | None = None,
     device: str | None = None,
 ) -> pd.DataFrame:
     """Extract image-level CNN embeddings from a channel-level manifest."""
     torch_device = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
     checkpoint_metadata: dict[str, Any] = {}
     if checkpoint_path is None:
-        model = ResNetEmbeddingModel(num_input_channels=len(DEFAULT_CHANNEL_ORDER)).to(torch_device)
+        model = ResNetEmbeddingModel(
+            num_input_channels=len(DEFAULT_CHANNEL_ORDER),
+            pretrained=pretrained,
+        ).to(torch_device)
     else:
         model, checkpoint_metadata = load_trained_embedding_model(checkpoint_path, torch_device)
     model.eval()
 
-    transform = ChannelStackTransform(
-        train=False,
-        normalize=bool(checkpoint_metadata.get("normalize", False)),
+    should_normalize = normalize or bool(checkpoint_metadata.get("normalize", False))
+    transform = build_embedding_transform(
+        normalize=should_normalize,
+        channel_stats_path=channel_stats_path,
     )
     dataset = MultiChannelCellPaintingDataset(
         manifest,
@@ -134,6 +158,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--image-size", type=int, default=224)
     parser.add_argument("--batch-size", type=int, default=4)
     parser.add_argument("--checkpoint", help="Optional trained classifier checkpoint.")
+    parser.add_argument("--pretrained", action="store_true", help="Use frozen ImageNet-pretrained ResNet18 weights.")
+    parser.add_argument("--normalize", action="store_true", help="Normalize channel stacks before extraction.")
+    parser.add_argument("--channel-stats", help="Optional JSON file with channel mean/std values.")
     parser.add_argument("--device", help="Optional torch device, such as cpu or cuda.")
     return parser
 
@@ -146,6 +173,9 @@ def main() -> None:
         image_size=args.image_size,
         batch_size=args.batch_size,
         checkpoint_path=args.checkpoint,
+        pretrained=args.pretrained,
+        normalize=args.normalize,
+        channel_stats_path=args.channel_stats,
         device=args.device,
     )
     output = Path(args.output)
