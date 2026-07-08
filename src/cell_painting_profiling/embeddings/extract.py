@@ -13,6 +13,7 @@ from cell_painting_profiling.data.multichannel_dataset import (
     DEFAULT_CHANNEL_ORDER,
     MultiChannelCellPaintingDataset,
 )
+from cell_painting_profiling.data.transforms import ChannelStackTransform
 from cell_painting_profiling.models.encoders import build_resnet18_classifier
 from cell_painting_profiling.training.forward_smoke_test import collate_batch
 
@@ -73,14 +74,23 @@ def extract_image_embeddings(
 ) -> pd.DataFrame:
     """Extract image-level CNN embeddings from a channel-level manifest."""
     torch_device = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
-    dataset = MultiChannelCellPaintingDataset(manifest, image_size=image_size)
-    loader = DataLoader(dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_batch)
+    checkpoint_metadata: dict[str, Any] = {}
     if checkpoint_path is None:
         model = ResNetEmbeddingModel(num_input_channels=len(DEFAULT_CHANNEL_ORDER)).to(torch_device)
-        checkpoint_metadata: dict[str, Any] = {}
     else:
         model, checkpoint_metadata = load_trained_embedding_model(checkpoint_path, torch_device)
     model.eval()
+
+    transform = ChannelStackTransform(
+        train=False,
+        normalize=bool(checkpoint_metadata.get("normalize", False)),
+    )
+    dataset = MultiChannelCellPaintingDataset(
+        manifest,
+        image_size=image_size,
+        transform=transform,
+    )
+    loader = DataLoader(dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_batch)
 
     rows = []
     with torch.no_grad():

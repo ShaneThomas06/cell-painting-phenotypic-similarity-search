@@ -185,3 +185,43 @@ queries with a shared-mechanism neighbor in top 3: 0.1875
 ```
 
 Compared with the 4-site baseline, top-3 retrieval coverage improved from 0.0625 to 0.1875. In simple terms, more image sites helped slightly, but the model still does not generalize well enough for strong mechanism recovery. The next substantial improvement should likely come from pretrained image features, stronger augmentation/regularization, or expanding beyond this tiny compound-holdout setup.
+
+## Pretrained Augmented 12-Site Baseline Result
+
+The 12-site baseline was rerun with ImageNet-pretrained ResNet18 weights, tensor normalization, and light flip/rotation augmentation.
+
+Training setup:
+
+```text
+encoder: pretrained ResNet18
+input channels: 5
+first convolution: RGB pretrained filters averaged across 5 channels
+normalization: enabled
+augmentation: random horizontal/vertical flips and 90-degree rotations
+image size: 96 x 96
+epochs: 3
+batch size: 8
+training image records: 96
+validation image records: 96
+```
+
+Training result:
+
+```text
+epoch 1 train loss: 1.8556 | val loss: 2.3302 | val accuracy: 0.0417
+epoch 2 train loss: 1.5509 | val loss: 3.0788 | val accuracy: 0.0833
+epoch 3 train loss: 1.1418 | val loss: 2.9919 | val accuracy: 0.1667
+```
+
+Retrieval result:
+
+```text
+192 image embeddings
+16 compound fingerprints
+48 nearest-neighbor rows
+top-1 shared mechanism rate: 0.1875
+top-3 row-level shared mechanism rate: 0.0833
+queries with a shared-mechanism neighbor in top 3: 0.2500
+```
+
+Compared with the random-initialized 12-site baseline, pretrained features improved validation accuracy from 0.1250 to 0.1667 and top-1 retrieval from 0.0625 to 0.1875. The result is still weak overall, but it supports the main modeling conclusion: representation quality matters more than simply increasing image sites.

@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 from torchvision import models
 
@@ -16,7 +17,16 @@ def adapt_first_conv(model: nn.Module, num_input_channels: int) -> nn.Module:
         padding=conv.padding,
         bias=conv.bias is not None,
     )
-    nn.init.kaiming_normal_(new_conv.weight, mode="fan_out", nonlinearity="relu")
+    with torch.no_grad():
+        if conv.weight.shape[1] == 3:
+            averaged_weights = conv.weight.mean(dim=1, keepdim=True)
+            scaled_weights = averaged_weights.repeat(1, num_input_channels, 1, 1)
+            scaled_weights *= 3.0 / float(num_input_channels)
+            new_conv.weight.copy_(scaled_weights)
+        else:
+            nn.init.kaiming_normal_(new_conv.weight, mode="fan_out", nonlinearity="relu")
+        if conv.bias is not None and new_conv.bias is not None:
+            new_conv.bias.copy_(conv.bias)
     model.conv1 = new_conv
     return model
 

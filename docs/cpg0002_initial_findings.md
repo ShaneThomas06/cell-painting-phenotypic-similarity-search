@@ -347,3 +347,19 @@ queries with a shared-mechanism neighbor in top 3: 0.1875
 ```
 
 Increasing image sites improved top-3 retrieval coverage slightly, but classification validation remained at chance. This suggests that replicate coverage alone is not enough; the next modeling improvement should focus on better representations, such as pretrained image features or stronger regularization.
+
+## Pretrained Augmented 12-Site Baseline Result
+
+The larger 12-site experiment was rerun with pretrained ResNet18 weights, channel-stack normalization, and light microscopy-safe augmentation.
+
+Observed result:
+
+```text
+final training loss: 1.1418
+final validation accuracy: 0.1667
+top-1 shared mechanism rate: 0.1875
+top-3 row-level shared mechanism rate: 0.0833
+queries with a shared-mechanism neighbor in top 3: 0.2500
+```
+
+This improved over the random-initialized 12-site baseline, especially for top-1 retrieval. The model is still not strong, but this is the first result showing that better visual representations can improve mechanism-aware phenotypic retrieval.

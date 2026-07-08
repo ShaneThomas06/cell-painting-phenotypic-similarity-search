@@ -16,6 +16,7 @@ from cell_painting_profiling.data.multichannel_dataset import (
     DEFAULT_CHANNEL_ORDER,
     MultiChannelCellPaintingDataset,
 )
+from cell_painting_profiling.data.transforms import ChannelStackTransform
 from cell_painting_profiling.models.encoders import build_resnet18_classifier
 from cell_painting_profiling.training.forward_smoke_test import build_mechanism_label_map
 from cell_painting_profiling.training.metrics import classification_metrics
@@ -81,8 +82,16 @@ def make_loader(
     image_size: int,
     batch_size: int,
     shuffle: bool,
+    train: bool = False,
+    normalize: bool = False,
+    augment: bool = False,
 ) -> DataLoader:
-    dataset = MultiChannelCellPaintingDataset(manifest, image_size=image_size)
+    transform = ChannelStackTransform(train=train and augment, normalize=normalize)
+    dataset = MultiChannelCellPaintingDataset(
+        manifest,
+        image_size=image_size,
+        transform=transform,
+    )
 
     def collate(batch: list[dict]) -> dict[str, Any]:
         return collate_labeled_batch(batch, label_map)
@@ -165,6 +174,8 @@ def run_training(
     weight_decay: float = 1e-4,
     val_compounds_per_mechanism: int = 1,
     pretrained: bool = False,
+    normalize: bool = False,
+    augment: bool = False,
     seed: int = 42,
     max_train_batches: int | None = None,
     max_val_batches: int | None = None,
@@ -181,8 +192,26 @@ def run_training(
     train_manifest = manifest.loc[manifest["split"] == "train"].reset_index(drop=True)
     val_manifest = manifest.loc[manifest["split"] == "val"].reset_index(drop=True)
 
-    train_loader = make_loader(train_manifest, label_map, image_size, batch_size, shuffle=True)
-    val_loader = make_loader(val_manifest, label_map, image_size, batch_size, shuffle=False)
+    train_loader = make_loader(
+        train_manifest,
+        label_map,
+        image_size,
+        batch_size,
+        shuffle=True,
+        train=True,
+        normalize=normalize,
+        augment=augment,
+    )
+    val_loader = make_loader(
+        val_manifest,
+        label_map,
+        image_size,
+        batch_size,
+        shuffle=False,
+        train=False,
+        normalize=normalize,
+        augment=False,
+    )
 
     model = build_resnet18_classifier(
         num_classes=len(label_map),
@@ -229,6 +258,9 @@ def run_training(
             "label_map": label_map,
             "channel_order": list(DEFAULT_CHANNEL_ORDER),
             "image_size": image_size,
+            "pretrained": pretrained,
+            "normalize": normalize,
+            "augment": augment,
         },
         model_output,
     )
@@ -243,6 +275,8 @@ def run_training(
         "learning_rate": learning_rate,
         "weight_decay": weight_decay,
         "pretrained": pretrained,
+        "normalize": normalize,
+        "augment": augment,
         "seed": seed,
         "num_classes": len(label_map),
         "label_map": label_map,
@@ -273,6 +307,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--weight-decay", type=float, default=1e-4)
     parser.add_argument("--val-compounds-per-mechanism", type=int, default=1)
     parser.add_argument("--pretrained", action="store_true")
+    parser.add_argument("--normalize", action="store_true")
+    parser.add_argument("--augment", action="store_true")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--max-train-batches", type=int)
     parser.add_argument("--max-val-batches", type=int)
@@ -292,6 +328,8 @@ def main() -> None:
         weight_decay=args.weight_decay,
         val_compounds_per_mechanism=args.val_compounds_per_mechanism,
         pretrained=args.pretrained,
+        normalize=args.normalize,
+        augment=args.augment,
         seed=args.seed,
         max_train_batches=args.max_train_batches,
         max_val_batches=args.max_val_batches,

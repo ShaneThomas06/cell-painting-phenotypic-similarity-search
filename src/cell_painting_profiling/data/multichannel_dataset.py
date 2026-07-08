@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from collections.abc import Callable
 from typing import Sequence
 
 import numpy as np
@@ -52,6 +53,7 @@ class MultiChannelCellPaintingDataset(Dataset):
         manifest: pd.DataFrame,
         channel_order: Sequence[str] = DEFAULT_CHANNEL_ORDER,
         image_size: int | None = 224,
+        transform: Callable[[torch.Tensor], torch.Tensor] | None = None,
     ) -> None:
         required = {
             "image_record_id",
@@ -69,6 +71,7 @@ class MultiChannelCellPaintingDataset(Dataset):
         self.manifest = manifest.copy()
         self.channel_order = tuple(channel_order)
         self.image_size = image_size
+        self.transform = transform
         self.records = self._build_records(self.manifest)
 
     def _build_records(self, manifest: pd.DataFrame) -> list[dict]:
@@ -102,6 +105,8 @@ class MultiChannelCellPaintingDataset(Dataset):
         channels = [load_channel_image(path) for path in record["channel_paths"]]
         image = torch.stack(channels, dim=0)
         image = resize_channel_stack(image, self.image_size)
+        if self.transform is not None:
+            image = self.transform(image)
         return {
             "image": image,
             "image_record_id": record["image_record_id"],
