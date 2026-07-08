@@ -147,3 +147,41 @@ queries with a shared-mechanism neighbor in top 3: 0.0625
 ```
 
 This is an honest weak baseline. It shows the end-to-end trained-model workflow works, but the current subset is too small for strong biological retrieval. The next improvement should increase replicate coverage and/or use pretrained biological image features before expecting meaningful mechanism recovery.
+
+## Larger 12-Site Baseline Result
+
+The baseline was scaled from 4 image sites per compound to 12 image sites per compound.
+
+Larger subset:
+
+```text
+8 mechanism-of-action classes
+2 compounds per mechanism
+12 image sites per compound
+192 image records
+960 channel-level image files
+0 image validation failures
+```
+
+Training result:
+
+```text
+epoch 1 train loss: 1.9706 | val loss: 2.2097 | val accuracy: 0.1250
+epoch 2 train loss: 0.9557 | val loss: 2.8035 | val accuracy: 0.1250
+epoch 3 train loss: 0.4811 | val loss: 3.5235 | val accuracy: 0.1250
+```
+
+The model still overfit: training loss decreased, but validation loss increased and validation accuracy remained at chance level for 8 classes.
+
+Retrieval result:
+
+```text
+192 image embeddings
+16 compound fingerprints
+48 nearest-neighbor rows
+top-1 shared mechanism rate: 0.0625
+top-3 row-level shared mechanism rate: 0.0625
+queries with a shared-mechanism neighbor in top 3: 0.1875
+```
+
+Compared with the 4-site baseline, top-3 retrieval coverage improved from 0.0625 to 0.1875. In simple terms, more image sites helped slightly, but the model still does not generalize well enough for strong mechanism recovery. The next substantial improvement should likely come from pretrained image features, stronger augmentation/regularization, or expanding beyond this tiny compound-holdout setup.

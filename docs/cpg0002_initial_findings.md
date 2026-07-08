@@ -329,3 +329,21 @@ top-3 row-level shared mechanism rate: 0.0208
 ```
 
 This result is close to chance and should be treated as a weak baseline. The useful conclusion is not that the model has discovered biology yet; it is that the project now supports the complete trained-model workflow: train CNN, extract trained embeddings, aggregate compound fingerprints, and evaluate phenotypic retrieval.
+
+## Larger 12-Site Baseline Result
+
+The image subset was expanded from 4 to 12 image sites per compound.
+
+Observed result:
+
+```text
+192 image records
+960 channel-level image files
+0 image validation failures
+final training loss: 0.4811
+final validation accuracy: 0.1250
+top-1 shared mechanism rate: 0.0625
+queries with a shared-mechanism neighbor in top 3: 0.1875
+```
+
+Increasing image sites improved top-3 retrieval coverage slightly, but classification validation remained at chance. This suggests that replicate coverage alone is not enough; the next modeling improvement should focus on better representations, such as pretrained image features or stronger regularization.
