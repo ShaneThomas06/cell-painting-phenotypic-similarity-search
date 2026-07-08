@@ -381,3 +381,17 @@ frozen pretrained queries with shared-mechanism neighbor in top 3: 0.3125
 ```
 
 This result supports a more nuanced conclusion: fine-tuning improved the closest match metric, while frozen pretrained features recovered more shared-mechanism neighbors within the top 3. The project should therefore treat representation strategy as a central analysis axis.
+
+## Frozen Embedding Linear Probe
+
+A logistic-regression probe was trained on frozen pretrained image embeddings.
+
+Observed result:
+
+```text
+image-level accuracy: 0.1667
+compound-level accuracy: 0.1250
+compound-level balanced accuracy: 0.1250
+```
+
+This indicates that frozen pretrained embeddings contain weak image-level mechanism signal, but the signal is not strong enough to classify held-out compounds reliably. At this point, the main bottleneck appears to be representation/data scale rather than a missing simple classifier tweak.

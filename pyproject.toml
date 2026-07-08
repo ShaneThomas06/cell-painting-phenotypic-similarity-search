@@ -39,6 +39,7 @@ validate-cell-painting-images = "cell_painting_profiling.data.validate_images:ma
 compute-cell-painting-channel-stats = "cell_painting_profiling.data.channel_stats:main"
 run-cnn-forward-smoke-test = "cell_painting_profiling.training.forward_smoke_test:main"
 train-baseline-moa-classifier = "cell_painting_profiling.training.train:main"
+train-linear-probe = "cell_painting_profiling.training.linear_probe:main"
 extract-cell-painting-embeddings = "cell_painting_profiling.embeddings.extract:main"
 aggregate-compound-fingerprints = "cell_painting_profiling.embeddings.aggregate:main"
 run-compound-retrieval = "cell_painting_profiling.embeddings.run_retrieval:main"

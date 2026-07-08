@@ -250,3 +250,64 @@ frozen pretrained                  0.0625             0.1042                0.31
 ```
 
 The frozen pretrained model did not win on top-1 retrieval, but it recovered the highest number of queries with a shared-mechanism neighbor somewhere in the top 3. This suggests that supervised fine-tuning on the tiny compound-holdout set can sharpen some nearest-neighbor matches, but frozen pretrained features may preserve broader visual structure better.
+
+## Frozen Embedding Linear Probe
+
+A logistic-regression linear probe was trained on frozen pretrained ResNet18 image embeddings. The CNN was not fine-tuned.
+
+Probe setup:
+
+```text
+input features: 512-dimensional frozen pretrained image embeddings
+classifier: standardized logistic regression
+training image records: 96
+validation image records: 96
+training compounds: 8
+validation compounds: 8
+```
+
+Probe result:
+
+```text
+image-level accuracy: 0.1667
+image-level balanced accuracy: 0.1667
+image-level macro F1: 0.1311
+compound-level accuracy: 0.1250
+compound-level balanced accuracy: 0.1250
+compound-level macro F1: 0.0833
+```
+
+The linear probe shows weak image-level MOA signal in the frozen embeddings, but compound-level performance remains at chance. This supports the conclusion that the main bottleneck is not simply the final classifier; the representation and/or dataset scale are still limiting.
+
+## Model Improvement Audit
+
+Model-side approaches tested so far:
+
+```text
+random ResNet18 fine-tuning
+more image sites per compound
+ImageNet-pretrained ResNet18 fine-tuning
+channel normalization
+light microscopy-safe augmentation
+frozen pretrained ResNet18 retrieval
+linear probe on frozen pretrained embeddings
+```
+
+What helped:
+
+```text
+pretrained features improved top-1 retrieval
+more image sites slightly improved top-3 coverage
+frozen pretrained features preserved broader top-3 retrieval coverage
+```
+
+What did not solve the problem:
+
+```text
+more epochs
+more image sites alone
+small supervised fine-tuning on this compound-holdout split
+linear probing frozen embeddings at this dataset scale
+```
+
+The remaining major improvement paths are no longer small implementation tweaks. They require either more data, more compute, or stronger domain-specific representations, such as bioimage-pretrained models, self-supervised Cell Painting pretraining, or a classical CellProfiler morphology-feature benchmark.

@@ -118,6 +118,7 @@ tests/                           Lightweight tests for data and analysis utiliti
 - [x] MOA-balanced baseline training subset
 - [x] Baseline supervised CNN training loop
 - [x] Frozen pretrained representation benchmark
+- [x] Linear probe on frozen embeddings
 - [x] Perturbation-level fingerprint aggregation smoke test
 - [x] Phenotypic nearest-neighbor search smoke test
 - [ ] Mechanism and target recovery analysis
