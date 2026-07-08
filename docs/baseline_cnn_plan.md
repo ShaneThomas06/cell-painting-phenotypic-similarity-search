@@ -105,3 +105,45 @@ metrics JSON saved locally
 ```
 
 This confirms that the baseline training path can load real TIFFs, assign mechanism labels, train a 5-channel ResNet18 classifier, evaluate it, and save outputs. The reported smoke-test accuracy should not be interpreted biologically because the run used only one train batch and one validation batch.
+
+## First 3-Epoch Baseline Result
+
+A full baseline run was completed on the 64-image-record subset using compound-holdout validation.
+
+Training setup:
+
+```text
+encoder: ResNet18
+input channels: 5
+image size: 96 x 96
+epochs: 3
+batch size: 8
+training compounds: 8
+validation compounds: 8
+training image records: 32
+validation image records: 32
+```
+
+Final epoch result:
+
+```text
+training loss: 0.5388
+validation accuracy: 0.1250
+validation balanced accuracy: 0.1250
+validation macro F1: 0.0278
+```
+
+The training loss dropped, but validation accuracy stayed at chance level for 8 classes. In simple terms, the model learned patterns from the specific training compounds but did not yet generalize to the held-out compounds.
+
+Trained-checkpoint retrieval result:
+
+```text
+64 image embeddings
+16 compound fingerprints
+48 nearest-neighbor rows
+top-1 shared mechanism rate: 0.0625
+top-3 row-level shared mechanism rate: 0.0208
+queries with a shared-mechanism neighbor in top 3: 0.0625
+```
+
+This is an honest weak baseline. It shows the end-to-end trained-model workflow works, but the current subset is too small for strong biological retrieval. The next improvement should increase replicate coverage and/or use pretrained biological image features before expecting meaningful mechanism recovery.

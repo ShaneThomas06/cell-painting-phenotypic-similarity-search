@@ -312,3 +312,20 @@ all images were 1994 x 1994 16-bit TIFFs
 ```
 
 This means the baseline training subset is now ready for the first supervised CNN training run. The next modeling step is to train a small ResNet18 classifier to predict mechanism-of-action from the 5-channel image tensors.
+
+## First Trained Baseline Retrieval Result
+
+A 3-epoch ResNet18 baseline was trained on the baseline subset and then reused as an embedding extractor.
+
+Observed result:
+
+```text
+final training loss: 0.5388
+final validation accuracy: 0.1250
+64 trained image embeddings
+16 trained compound fingerprints
+top-1 shared mechanism rate: 0.0625
+top-3 row-level shared mechanism rate: 0.0208
+```
+
+This result is close to chance and should be treated as a weak baseline. The useful conclusion is not that the model has discovered biology yet; it is that the project now supports the complete trained-model workflow: train CNN, extract trained embeddings, aggregate compound fingerprints, and evaluate phenotypic retrieval.
