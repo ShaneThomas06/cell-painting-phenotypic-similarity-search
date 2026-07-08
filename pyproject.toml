@@ -43,6 +43,7 @@ train-linear-probe = "cell_painting_profiling.training.linear_probe:main"
 extract-cell-painting-embeddings = "cell_painting_profiling.embeddings.extract:main"
 aggregate-compound-fingerprints = "cell_painting_profiling.embeddings.aggregate:main"
 run-compound-retrieval = "cell_painting_profiling.embeddings.run_retrieval:main"
+compare-cell-painting-experiments = "cell_painting_profiling.analysis.compare_experiments:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

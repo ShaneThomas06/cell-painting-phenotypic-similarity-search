@@ -53,7 +53,7 @@ Fallback or benchmarking direction:
 
 The first implementation will inspect available metadata before choosing the final subset. Raw image data should not be committed to the repository.
 
-See [data notes](docs/data.md), [dataset reconnaissance](docs/dataset_reconnaissance.md), and the [baseline CNN plan](docs/baseline_cnn_plan.md) for dataset assumptions, candidate rankings, and baseline-training direction.
+See [data notes](docs/data.md), [dataset reconnaissance](docs/dataset_reconnaissance.md), the [baseline CNN plan](docs/baseline_cnn_plan.md), and [representation benchmark results](docs/results.md) for dataset assumptions, candidate rankings, baseline-training direction, and model comparison results.
 
 ## Planned Method
 
@@ -90,6 +90,10 @@ Representation diagnostics:
 - morphology-chemistry agreement and disagreement examples
 - batch distribution checks
 
+
+## Current Result
+
+The strongest top-1 retrieval result came from the pretrained fine-tuned ResNet18 model. The strongest top-3 query coverage came from the frozen pretrained ResNet18 representation. Overall performance remains weak under compound-holdout validation, which indicates that the current bottleneck is representation quality and compound diversity rather than basic pipeline implementation.
 ## Setup
 
 See [setup instructions](docs/setup.md).

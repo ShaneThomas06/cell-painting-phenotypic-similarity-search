@@ -1,0 +1,4 @@
+experiment_id,display_name,representation,cnn_training,validation_accuracy,validation_balanced_accuracy,validation_macro_f1,final_train_loss,final_validation_loss,top1_shared_mechanism,top3_row_shared_mechanism,query_has_shared_mechanism_top3,linear_probe_image_accuracy,linear_probe_compound_accuracy,linear_probe_compound_macro_f1
+random_12site_finetuned,Random ResNet18 fine-tuned,random initialization,fine-tuned,0.125,0.125,0.027777777777777776,0.4810916582743327,3.5234818756580353,0.0625,0.0625,0.1875,,,
+pretrained_augmented_finetuned,Pretrained ResNet18 fine-tuned,ImageNet pretrained plus augmentation,fine-tuned,0.16666666666666666,0.16666666666666669,0.17083980331262938,1.14176740248998,2.9918745259443917,0.1875,0.08333333333333333,0.25,,,
+frozen_pretrained,Frozen pretrained ResNet18,ImageNet pretrained frozen backbone,frozen,,,,,,0.0625,0.10416666666666667,0.3125,0.16666666666666666,0.125,0.08333333333333333

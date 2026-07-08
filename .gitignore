@@ -19,7 +19,9 @@ data/processed/*
 reports/figures/*
 reports/tables/*
 !reports/figures/.gitkeep
+!reports/figures/model_comparison_retrieval.png
 !reports/tables/.gitkeep
+!reports/tables/model_comparison_summary.csv
 
 /models/
 checkpoints/
