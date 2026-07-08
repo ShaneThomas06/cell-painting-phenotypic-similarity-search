@@ -116,6 +116,7 @@ tests/                           Lightweight tests for data and analysis utiliti
 - [x] Image loading and preprocessing
 - [x] Baseline CNN embedding extraction smoke test
 - [x] MOA-balanced baseline training subset
+- [x] Baseline supervised CNN training loop
 - [x] Perturbation-level fingerprint aggregation smoke test
 - [x] Phenotypic nearest-neighbor search smoke test
 - [ ] Mechanism and target recovery analysis

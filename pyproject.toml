@@ -37,6 +37,7 @@ select-cpg0002-baseline-subset = "cell_painting_profiling.data.select_baseline_s
 download-cell-painting-images = "cell_painting_profiling.data.download_images:main"
 validate-cell-painting-images = "cell_painting_profiling.data.validate_images:main"
 run-cnn-forward-smoke-test = "cell_painting_profiling.training.forward_smoke_test:main"
+train-baseline-moa-classifier = "cell_painting_profiling.training.train:main"
 extract-cell-painting-embeddings = "cell_painting_profiling.embeddings.extract:main"
 aggregate-compound-fingerprints = "cell_painting_profiling.embeddings.aggregate:main"
 run-compound-retrieval = "cell_painting_profiling.embeddings.run_retrieval:main"

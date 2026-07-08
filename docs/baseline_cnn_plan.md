@@ -72,3 +72,36 @@ The manifest is written locally under `data/processed/` and ignored by Git.
 ## Next Step
 
 Download the 320 channel images, validate that they open correctly, then train a small ResNet18 MOA classifier. After training, the layer before the classifier head will be used as the improved image embedding.
+
+## Baseline ResNet18 Training Smoke Test
+
+A supervised ResNet18 training loop was added for mechanism-of-action prediction from 5-channel Cell Painting tensors.
+
+Smoke-test command pattern:
+
+```bash
+python -m cell_painting_profiling.training.train \
+  --manifest data/processed/cpg0002-jump-scope/BRO0117059_20X_baseline_training_image_manifest.csv \
+  --metrics-output reports/tables/baseline_resnet18_smoke_metrics.json \
+  --model-output models/baseline_resnet18_smoke.pt \
+  --image-size 96 \
+  --batch-size 4 \
+  --epochs 1 \
+  --max-train-batches 1 \
+  --max-val-batches 1
+```
+
+Observed smoke-test result:
+
+```text
+device: CPU
+mechanism classes: 8
+train image records: 32
+validation image records: 32
+one training batch completed
+one validation batch completed
+model checkpoint saved locally
+metrics JSON saved locally
+```
+
+This confirms that the baseline training path can load real TIFFs, assign mechanism labels, train a 5-channel ResNet18 classifier, evaluate it, and save outputs. The reported smoke-test accuracy should not be interpreted biologically because the run used only one train batch and one validation batch.
