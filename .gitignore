@@ -20,8 +20,11 @@ reports/figures/*
 reports/tables/*
 !reports/figures/.gitkeep
 !reports/figures/model_comparison_retrieval.png
+!reports/figures/retrieval_example_panel.png
+!reports/figures/compound_embedding_umap.png
 !reports/tables/.gitkeep
 !reports/tables/model_comparison_summary.csv
+!reports/tables/retrieval_example_cases.csv
 
 /models/
 checkpoints/

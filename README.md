@@ -91,9 +91,23 @@ Representation diagnostics:
 - batch distribution checks
 
 
+
 ## Current Result
 
-The strongest top-1 retrieval result came from the pretrained fine-tuned ResNet18 model. The strongest top-3 query coverage came from the frozen pretrained ResNet18 representation. Overall performance remains weak under compound-holdout validation, which indicates that the current bottleneck is representation quality and compound diversity rather than basic pipeline implementation.
+The strongest top-1 retrieval result came from the pretrained fine-tuned ResNet18 model. The strongest top-3 query coverage came from the frozen pretrained ResNet18 representation. Overall performance remains limited under compound-holdout validation, which indicates that the current bottleneck is representation quality and compound diversity rather than basic pipeline implementation.
+
+![Mechanism-aware retrieval comparison](reports/figures/model_comparison_retrieval.png)
+
+Compound-level UMAP projections show how representation choice changes the organization of morphology-derived fingerprints.
+
+![Compound embedding UMAP](reports/figures/compound_embedding_umap.png)
+
+Representative retrieval examples show one top-1 mechanism match and one case where the correct mechanism appears at rank 3 rather than rank 1.
+
+![Retrieval examples](reports/figures/retrieval_example_panel.png)
+
+See [representation benchmark results](docs/results.md) for the full interpretation.
+
 ## Setup
 
 See [setup instructions](docs/setup.md).
@@ -127,7 +141,7 @@ tests/                           Lightweight tests for data and analysis utiliti
 - [x] Phenotypic nearest-neighbor search smoke test
 - [ ] Mechanism and target recovery analysis
 - [ ] Morphology-chemistry disagreement analysis
-- [ ] Final figures and interpretation
+- [x] Final figures and interpretation
 
 ## References
 

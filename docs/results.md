@@ -66,6 +66,25 @@ The frozen pretrained model gave the strongest top-3 query coverage. This sugges
 
 The linear probe on frozen embeddings achieved weak image-level classification performance and chance-level compound-level performance. This indicates that the frozen embeddings contain limited mechanism signal, but the signal is not strong enough to classify held-out compounds reliably.
 
+## Visual Diagnostics
+
+Compound-level UMAP projections were generated for the three representation strategies:
+
+```text
+reports/figures/compound_embedding_umap.png
+```
+
+The UMAP plots are diagnostic rather than confirmatory. They provide a visual summary of whether compounds with the same mechanism occupy nearby regions of representation space. The current projections do not show strong mechanism-level separation, which is consistent with the retrieval metrics.
+
+Representative retrieval panels were generated from the pretrained fine-tuned model:
+
+```text
+reports/figures/retrieval_example_panel.png
+reports/tables/retrieval_example_cases.csv
+```
+
+The retrieval examples include one case where the rank-1 neighbor shares the query mechanism and one case where the rank-1 neighbor differs but a shared-mechanism compound appears at rank 3. These examples illustrate the current behavior of the retrieval model: useful local matches occur, but mechanism recovery is not consistent.
+
 ## Main Conclusion
 
 The benchmark supports a representation-centered interpretation. The pipeline is technically complete, but the current dataset scale and generic pretrained features limit biological mechanism recovery. Small supervised fine-tuning is not sufficient under compound-holdout validation.

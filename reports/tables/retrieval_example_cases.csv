@@ -1,0 +1,7 @@
+example_type,query_compound,query_mechanism,neighbor_rank,neighbor_compound,neighbor_mechanism,shared_mechanism,similarity
+Shared mechanism top-1,BMS-863233,CDC inhibitor,1,KH-CB19,CDC inhibitor,True,0.9422979521760269
+Shared mechanism top-1,BMS-863233,CDC inhibitor,2,CP-724714,EGFR inhibitor,False,0.9373843931123372
+Shared mechanism top-1,BMS-863233,CDC inhibitor,3,GNF-5,Bcr-Abl kinase inhibitor,False,0.924252723216318
+Different mechanism top-1,PF-477736,CHK inhibitor,1,THZ1,CDK inhibitor,False,0.8965532824402038
+Different mechanism top-1,PF-477736,CHK inhibitor,2,ponatinib,Bcr-Abl kinase inhibitor,False,0.8672668992609066
+Different mechanism top-1,PF-477736,CHK inhibitor,3,SCH-900776,CHK inhibitor,True,0.6798085357874764

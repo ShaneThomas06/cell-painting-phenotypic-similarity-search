@@ -44,6 +44,7 @@ extract-cell-painting-embeddings = "cell_painting_profiling.embeddings.extract:m
 aggregate-compound-fingerprints = "cell_painting_profiling.embeddings.aggregate:main"
 run-compound-retrieval = "cell_painting_profiling.embeddings.run_retrieval:main"
 compare-cell-painting-experiments = "cell_painting_profiling.analysis.compare_experiments:main"
+generate-cell-painting-result-figures = "cell_painting_profiling.analysis.visualize_results:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
