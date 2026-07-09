@@ -1,98 +1,54 @@
 # Phenotypic Similarity Search for Drug Mechanism Discovery with Cell Painting
 
-This project uses Cell Painting microscopy images to learn deep phenotypic embeddings of chemical and genetic perturbations. The goal is to build a morphology-based retrieval workflow: given a query compound or perturbation, find other perturbations that produce similar cellular phenotypes and evaluate whether those visual neighbors share known mechanisms, targets, or pathway annotations.
+This project builds a Cell Painting-based phenotypic similarity search workflow for drug mechanism discovery. It uses multi-channel microscopy images to generate CNN-derived compound fingerprints, then evaluates whether visually similar compounds share mechanism-of-action annotations or chemical structure similarity.
 
-The project is framed as a drug-discovery analysis workflow, not a leaderboard-style image classifier.
+The project is framed as a phenotypic drug discovery analysis pipeline, not a leaderboard-style image classifier.
 
 ## Research Question
 
-Can CNN-derived Cell Painting embeddings identify biologically meaningful perturbation similarity and recover known mechanism-of-action relationships?
+Can Cell Painting image embeddings recover biologically meaningful compound similarity, and can morphology highlight relationships that are not captured by chemical structure alone?
 
-## Motivation
+## Why This Project
 
-Cell Painting captures rich cellular morphology across multiple fluorescent channels, measuring how perturbations affect nuclei, cytoplasm, mitochondria, actin, endoplasmic reticulum, Golgi, nucleoli, and plasma membrane-associated structures. In phenotypic drug discovery, compounds that produce similar morphology may share pathway activity, target biology, toxicity signals, or downstream cellular responses even when their chemical structures differ.
+Cell Painting measures cellular morphology across multiple fluorescence channels. In drug discovery, compounds that produce similar cellular phenotypes may share pathway activity, downstream biological response, toxicity signatures, or mechanism-related behavior even when their chemical structures differ.
 
-This project treats morphology as a searchable biological fingerprint. Instead of training a model only to classify labels, it asks whether image-derived embeddings can support mechanism discovery, compound prioritization, and biological interpretation.
+This project treats morphology as a searchable biological fingerprint. The main output is a compound-level retrieval workflow that connects microscopy images, mechanism labels, and chemical similarity.
 
-## Core Idea
-
-1. Load Cell Painting images and perturbation metadata.
-2. Train or fine-tune a CNN image encoder.
-3. Extract image-level embeddings from microscopy images.
-4. Aggregate image-level embeddings into perturbation-level phenotypic fingerprints.
-5. Build a nearest-neighbor search workflow for perturbations.
-6. Compare phenotypic similarity against mechanism, target, pathway, and chemical metadata.
-7. Highlight interpretable examples where morphology agrees or disagrees with known annotations.
-
-## Unique Edge
-
-The main analysis focuses on phenotypic retrieval:
+## Completed Workflow
 
 ```text
-query perturbation -> closest morphology neighbors -> mechanism/target comparison
+metadata normalization
+image download and validation
+multi-channel image loading
+ResNet18 representation learning
+image-level embedding extraction
+compound-level fingerprint aggregation
+nearest-neighbor phenotypic retrieval
+morphology-chemistry comparison
+case-study visualization
 ```
 
-A secondary analysis will examine morphology-chemistry disagreement:
+## Dataset
+
+The benchmark uses the `cpg0002-jump-scope` JUMP-MOA Cell Painting dataset.
+
+Final benchmark subset:
 
 ```text
-chemically dissimilar but morphologically similar perturbations
+8 mechanism-of-action classes
+2 compounds per mechanism
+12 image sites per compound
+192 image records
+960 channel-level image files
 ```
 
-These cases are especially interesting for drug discovery because they may suggest shared downstream biology, convergent cellular response, unexpected off-target effects, or repurposing hypotheses.
+Each image record contains five fluorescence channels:
 
-## Candidate Data Sources
+```text
+RNA, Mito, AGP, ER, DNA
+```
 
-Primary direction:
-
-- Cell Painting Gallery
-- JUMP Cell Painting Consortium data
-
-Fallback or benchmarking direction:
-
-- RxRx1 for batch-effect-aware representation testing
-
-The first implementation will inspect available metadata before choosing the final subset. Raw image data should not be committed to the repository.
-
-See [data notes](docs/data.md), [dataset reconnaissance](docs/dataset_reconnaissance.md), the [baseline CNN plan](docs/baseline_cnn_plan.md), and [representation benchmark results](docs/results.md) for dataset assumptions, candidate rankings, baseline-training direction, and model comparison results.
-
-## Planned Method
-
-1. Inspect Cell Painting metadata and identify compound, perturbation, mechanism, target, batch, plate, and image fields.
-2. Build a manageable subset with enough replicate images per perturbation.
-3. Train a baseline CNN encoder or use a pretrained encoder as a feature extractor.
-4. Extract image embeddings and aggregate them to perturbation fingerprints.
-5. Build nearest-neighbor retrieval over perturbation fingerprints.
-6. Evaluate whether nearest neighbors share known mechanisms, targets, or pathways.
-7. Visualize representative image panels, UMAP embeddings, retrieval examples, and disagreement cases.
-
-## Initial Baseline
-
-- Encoder: ResNet18 or EfficientNet-B0
-- Input: multi-channel Cell Painting image composites or channel-aware tensors
-- Unit of analysis: perturbation-level fingerprint
-- Retrieval metric: cosine similarity between fingerprints
-- Primary evaluation: top-k mechanism or target recovery among nearest neighbors
-
-## Evaluation
-
-Retrieval metrics:
-
-- top-k mechanism recovery
-- top-k target recovery
-- mean average precision for shared mechanism
-- enrichment of shared annotations among nearest neighbors
-
-Representation diagnostics:
-
-- UMAP colored by mechanism, target, batch, and perturbation type
-- nearest-neighbor retrieval panels
-- perturbation similarity heatmaps
-- morphology-chemistry agreement and disagreement examples
-- batch distribution checks
-
-
-
-## Current Result
+## Headline Results
 
 The strongest top-1 retrieval result came from the pretrained fine-tuned ResNet18 model. The strongest top-3 query coverage came from the frozen pretrained ResNet18 representation. Overall performance remains limited under compound-holdout validation, which indicates that the current bottleneck is representation quality and compound diversity rather than basic pipeline implementation.
 
@@ -106,6 +62,8 @@ Representative retrieval examples show one top-1 mechanism match and one case wh
 
 ![Retrieval examples](reports/figures/retrieval_example_panel.png)
 
+## Morphology-Chemistry Analysis
+
 The morphology-chemistry analysis compares CNN-derived phenotypic similarity with Morgan fingerprint chemical similarity. The strongest disagreement case is a CDC inhibitor pair, BMS-863233 and KH-CB19, with high morphology similarity and low chemical similarity. This supports the main project direction: Cell Painting can highlight shared cellular response that is not captured by chemical structure alone.
 
 ![Morphology and chemistry similarity](reports/figures/morphology_chemistry_similarity.png)
@@ -114,7 +72,11 @@ The case-study panel shows the paired Cell Painting composites behind the strong
 
 ![Morphology-chemistry case studies](reports/figures/morphology_chemistry_case_studies.png)
 
-See [representation benchmark results](docs/results.md) for the full interpretation.
+## Interpretation
+
+The project supports a representation-centered conclusion. The full pipeline works, but the current dataset scale and generic pretrained image features limit mechanism recovery. The strongest contribution is the reproducible workflow: image-derived morphology fingerprints can be compared against mechanism labels and chemical structure similarity to identify interpretable agreement and disagreement cases.
+
+See the [final report](docs/final_report.md) for the complete scientific narrative and [representation benchmark results](docs/results.md) for metric details.
 
 ## Setup
 
@@ -125,12 +87,25 @@ See [setup instructions](docs/setup.md).
 ```text
 configs/                         Experiment and subset configuration files
 data/                            Local data folders; raw data is ignored by git
-docs/                            Project design, setup, and data notes
+docs/                            Project design, setup, and final reports
 notebooks/                       Exploration and result-analysis notebooks
 reports/figures/                 Generated plots for README and reports
 reports/tables/                  Generated metrics tables
 src/cell_painting_profiling/     Reusable Python package
 tests/                           Lightweight tests for data and analysis utilities
+```
+
+## Main Artifacts
+
+```text
+docs/final_report.md
+reports/tables/model_comparison_summary.csv
+reports/tables/morphology_chemistry_pairwise.csv
+reports/tables/morphology_chemistry_cases.csv
+reports/figures/model_comparison_retrieval.png
+reports/figures/retrieval_example_panel.png
+reports/figures/morphology_chemistry_similarity.png
+reports/figures/morphology_chemistry_case_studies.png
 ```
 
 ## Milestones
@@ -145,9 +120,8 @@ tests/                           Lightweight tests for data and analysis utiliti
 - [x] Baseline supervised CNN training loop
 - [x] Frozen pretrained representation benchmark
 - [x] Linear probe on frozen embeddings
-- [x] Perturbation-level fingerprint aggregation smoke test
-- [x] Phenotypic nearest-neighbor search smoke test
-- [ ] Mechanism and target recovery analysis
+- [x] Perturbation-level fingerprint aggregation
+- [x] Phenotypic nearest-neighbor search
 - [x] Morphology-chemistry disagreement analysis
 - [x] Final figures and interpretation
 
@@ -157,4 +131,3 @@ tests/                           Lightweight tests for data and analysis utiliti
 - JUMP Cell Painting Consortium
 - Cell Painting: a decade of discovery and innovation in cellular imaging
 - Image-based profiling for drug discovery
-
