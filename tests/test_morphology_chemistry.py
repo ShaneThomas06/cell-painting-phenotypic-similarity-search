@@ -2,6 +2,7 @@ import pandas as pd
 
 from cell_painting_profiling.analysis.morphology_chemistry import (
     attach_chemical_metadata,
+    build_case_study_summary,
     build_pairwise_similarity_table,
     select_case_studies,
     smiles_to_fingerprint,
@@ -54,6 +55,31 @@ def test_select_case_studies_returns_named_cases():
     assert "morphologically similar, chemically dissimilar" in set(cases["case_type"])
     assert "chemically similar, morphologically dissimilar" in set(cases["case_type"])
 
+
+
+def test_build_case_study_summary_combines_duplicate_pairs():
+    cases = pd.DataFrame(
+        {
+            "compound_a_id": ["a", "a", "c"],
+            "compound_a_name": ["A", "A", "C"],
+            "compound_a_mechanism": ["m1", "m1", "m2"],
+            "compound_b_id": ["b", "b", "d"],
+            "compound_b_name": ["B", "B", "D"],
+            "compound_b_mechanism": ["m1", "m1", "m3"],
+            "same_mechanism": [True, True, False],
+            "morphology_similarity": [0.9, 0.9, 0.2],
+            "chemical_similarity": [0.1, 0.1, 0.8],
+            "morphology_rank": [1.0, 1.0, 3.0],
+            "chemical_rank": [3.0, 3.0, 1.0],
+            "morphology_chemistry_gap": [0.8, 0.8, -0.6],
+            "case_type": ["case one", "case two", "case three"],
+        }
+    )
+
+    summary = build_case_study_summary(cases)
+
+    assert len(summary) == 2
+    assert summary.iloc[0]["case_type"] == "case one; case two"
 
 def test_attach_chemical_metadata_joins_by_perturbation_id():
     fingerprints = pd.DataFrame(

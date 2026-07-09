@@ -110,6 +110,10 @@ The morphology-chemistry analysis compares CNN-derived phenotypic similarity wit
 
 ![Morphology and chemistry similarity](reports/figures/morphology_chemistry_similarity.png)
 
+The case-study panel shows the paired Cell Painting composites behind the strongest agreement and disagreement examples.
+
+![Morphology-chemistry case studies](reports/figures/morphology_chemistry_case_studies.png)
+
 See [representation benchmark results](docs/results.md) for the full interpretation.
 
 ## Setup

@@ -14,6 +14,7 @@ from rdkit import Chem, DataStructs
 from rdkit.Chem import rdFingerprintGenerator
 from sklearn.metrics.pairwise import cosine_similarity
 
+from cell_painting_profiling.analysis.visualize_results import first_site_for_compound, make_rgb_composite
 from cell_painting_profiling.embeddings.aggregate import get_embedding_columns
 
 
@@ -150,6 +151,33 @@ def select_case_studies(pairwise: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(cases)
 
 
+def build_case_study_summary(cases: pd.DataFrame) -> pd.DataFrame:
+    if cases.empty:
+        return cases.copy()
+
+    pair_columns = [
+        "compound_a_id",
+        "compound_a_name",
+        "compound_a_mechanism",
+        "compound_b_id",
+        "compound_b_name",
+        "compound_b_mechanism",
+        "same_mechanism",
+        "morphology_similarity",
+        "chemical_similarity",
+        "morphology_rank",
+        "chemical_rank",
+        "morphology_chemistry_gap",
+    ]
+    grouped = (
+        cases.groupby(pair_columns, dropna=False)["case_type"]
+        .apply(lambda values: "; ".join(dict.fromkeys(values)))
+        .reset_index()
+        .sort_values("morphology_chemistry_gap", ascending=False)
+    )
+    return grouped.reset_index(drop=True)
+
+
 def plot_morphology_chemistry(pairwise: pd.DataFrame, output_path: str | Path) -> None:
     sns.set_theme(style="whitegrid")
     fig, ax = plt.subplots(figsize=(7, 5.5))
@@ -175,12 +203,70 @@ def plot_morphology_chemistry(pairwise: pd.DataFrame, output_path: str | Path) -
     plt.close(fig)
 
 
+def plot_case_study_panel(
+    cases: pd.DataFrame,
+    manifest_path: str | Path,
+    output_path: str | Path,
+    image_size: int = 224,
+) -> None:
+    case_studies = build_case_study_summary(cases)
+    if case_studies.empty:
+        raise ValueError("No case studies are available for plotting")
+
+    manifest = pd.read_csv(manifest_path)
+    fig, axes = plt.subplots(len(case_studies), 3, figsize=(12, 3.4 * len(case_studies)))
+    if len(case_studies) == 1:
+        axes = axes.reshape(1, -1)
+
+    for row_index, case in case_studies.iterrows():
+        left = make_rgb_composite(
+            first_site_for_compound(manifest, case["compound_a_id"]),
+            image_size=image_size,
+        )
+        right = make_rgb_composite(
+            first_site_for_compound(manifest, case["compound_b_id"]),
+            image_size=image_size,
+        )
+
+        axes[row_index, 0].imshow(left)
+        axes[row_index, 0].set_title(
+            f"{case['compound_a_name']}\n{case['compound_a_mechanism']}",
+            fontsize=8,
+        )
+        axes[row_index, 0].axis("off")
+
+        axes[row_index, 1].imshow(right)
+        axes[row_index, 1].set_title(
+            f"{case['compound_b_name']}\n{case['compound_b_mechanism']}",
+            fontsize=8,
+        )
+        axes[row_index, 1].axis("off")
+
+        summary = (
+            f"{case['case_type']}\n\n"
+            f"Morphology cosine: {case['morphology_similarity']:.3f}\n"
+            f"Chemical Tanimoto: {case['chemical_similarity']:.3f}\n"
+            f"Shared mechanism: {case['same_mechanism']}"
+        )
+        axes[row_index, 2].text(0.0, 0.5, summary, va="center", ha="left", fontsize=9)
+        axes[row_index, 2].axis("off")
+
+    fig.suptitle("Morphology-chemistry case studies", y=1.01)
+    fig.tight_layout()
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, dpi=200, bbox_inches="tight")
+    plt.close(fig)
+
+
 def run_analysis(
     fingerprints_path: str | Path,
     metadata_path: str | Path,
     output_pairwise: str | Path,
     output_cases: str | Path,
     output_figure: str | Path,
+    manifest_path: str | Path | None = None,
+    output_case_panel: str | Path | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     fingerprints = pd.read_csv(fingerprints_path)
     metadata = pd.read_csv(metadata_path)
@@ -197,6 +283,8 @@ def run_analysis(
     cases.to_csv(output_cases, index=False)
 
     plot_morphology_chemistry(pairwise, output_figure)
+    if manifest_path is not None and output_case_panel is not None:
+        plot_case_study_panel(cases, manifest_path, output_case_panel)
     return pairwise, cases
 
 
@@ -207,6 +295,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output-pairwise", required=True)
     parser.add_argument("--output-cases", required=True)
     parser.add_argument("--output-figure", required=True)
+    parser.add_argument("--manifest")
+    parser.add_argument("--output-case-panel")
     return parser
 
 
@@ -218,6 +308,8 @@ def main() -> None:
         output_pairwise=args.output_pairwise,
         output_cases=args.output_cases,
         output_figure=args.output_figure,
+        manifest_path=args.manifest,
+        output_case_panel=args.output_case_panel,
     )
     print(f"Wrote {len(pairwise)} compound pairs")
     print(cases[["case_type", "compound_a_name", "compound_b_name"]].to_string(index=False))

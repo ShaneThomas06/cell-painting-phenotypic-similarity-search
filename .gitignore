@@ -23,6 +23,7 @@ reports/tables/*
 !reports/figures/retrieval_example_panel.png
 !reports/figures/compound_embedding_umap.png
 !reports/figures/morphology_chemistry_similarity.png
+!reports/figures/morphology_chemistry_case_studies.png
 !reports/tables/.gitkeep
 !reports/tables/model_comparison_summary.csv
 !reports/tables/retrieval_example_cases.csv

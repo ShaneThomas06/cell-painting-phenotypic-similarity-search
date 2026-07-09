@@ -96,13 +96,14 @@ reports/tables/morphology_chemistry_pairwise.csv
 reports/tables/morphology_chemistry_cases.csv
 ```
 
-The summary figure is available at:
+The summary figures are available at:
 
 ```text
 reports/figures/morphology_chemistry_similarity.png
+reports/figures/morphology_chemistry_case_studies.png
 ```
 
-The strongest morphology-chemistry disagreement case was BMS-863233 and KH-CB19. Both compounds are annotated as CDC inhibitors and showed high morphology similarity, but their Morgan fingerprint similarity was low. This is a useful positive example for phenotypic profiling: compounds can converge on a similar cellular phenotype without being chemically close.
+The case-study panel displays paired Cell Painting composites for the strongest agreement and disagreement examples. The strongest morphology-chemistry disagreement case was BMS-863233 and KH-CB19. Both compounds are annotated as CDC inhibitors and showed high morphology similarity, but their Morgan fingerprint similarity was low. This is a useful positive example for phenotypic profiling: compounds can converge on a similar cellular phenotype without being chemically close.
 
 The strongest same-mechanism low-morphology case was ponatinib and GNF-5, both annotated as Bcr-Abl kinase inhibitors. This illustrates the opposite limitation: shared mechanism labels do not guarantee similar Cell Painting profiles in a small image subset.
 
