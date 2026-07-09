@@ -2,8 +2,6 @@
 
 This project builds a Cell Painting-based phenotypic similarity search workflow for drug mechanism discovery. It uses multi-channel microscopy images to generate CNN-derived compound fingerprints, then evaluates whether visually similar compounds share mechanism-of-action annotations or chemical structure similarity.
 
-The project is framed as a phenotypic drug discovery analysis pipeline, not a leaderboard-style image classifier.
-
 ## Research Question
 
 Can Cell Painting image embeddings recover biologically meaningful compound similarity, and can morphology highlight relationships that are not captured by chemical structure alone?
