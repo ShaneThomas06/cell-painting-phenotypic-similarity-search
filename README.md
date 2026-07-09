@@ -106,6 +106,10 @@ Representative retrieval examples show one top-1 mechanism match and one case wh
 
 ![Retrieval examples](reports/figures/retrieval_example_panel.png)
 
+The morphology-chemistry analysis compares CNN-derived phenotypic similarity with Morgan fingerprint chemical similarity. The strongest disagreement case is a CDC inhibitor pair, BMS-863233 and KH-CB19, with high morphology similarity and low chemical similarity. This supports the main project direction: Cell Painting can highlight shared cellular response that is not captured by chemical structure alone.
+
+![Morphology and chemistry similarity](reports/figures/morphology_chemistry_similarity.png)
+
 See [representation benchmark results](docs/results.md) for the full interpretation.
 
 ## Setup
@@ -140,7 +144,7 @@ tests/                           Lightweight tests for data and analysis utiliti
 - [x] Perturbation-level fingerprint aggregation smoke test
 - [x] Phenotypic nearest-neighbor search smoke test
 - [ ] Mechanism and target recovery analysis
-- [ ] Morphology-chemistry disagreement analysis
+- [x] Morphology-chemistry disagreement analysis
 - [x] Final figures and interpretation
 
 ## References

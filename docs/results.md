@@ -85,9 +85,30 @@ reports/tables/retrieval_example_cases.csv
 
 The retrieval examples include one case where the rank-1 neighbor shares the query mechanism and one case where the rank-1 neighbor differs but a shared-mechanism compound appears at rank 3. These examples illustrate the current behavior of the retrieval model: useful local matches occur, but mechanism recovery is not consistent.
 
+## Morphology-Chemistry Comparison
+
+Chemical similarity was computed from SMILES using RDKit Morgan fingerprints and Tanimoto similarity. Morphology similarity was computed from pretrained fine-tuned ResNet18 compound fingerprints using cosine similarity. This analysis included 15 compounds with valid SMILES and produced 105 compound pairs.
+
+The machine-readable outputs are available at:
+
+```text
+reports/tables/morphology_chemistry_pairwise.csv
+reports/tables/morphology_chemistry_cases.csv
+```
+
+The summary figure is available at:
+
+```text
+reports/figures/morphology_chemistry_similarity.png
+```
+
+The strongest morphology-chemistry disagreement case was BMS-863233 and KH-CB19. Both compounds are annotated as CDC inhibitors and showed high morphology similarity, but their Morgan fingerprint similarity was low. This is a useful positive example for phenotypic profiling: compounds can converge on a similar cellular phenotype without being chemically close.
+
+The strongest same-mechanism low-morphology case was ponatinib and GNF-5, both annotated as Bcr-Abl kinase inhibitors. This illustrates the opposite limitation: shared mechanism labels do not guarantee similar Cell Painting profiles in a small image subset.
+
 ## Main Conclusion
 
-The benchmark supports a representation-centered interpretation. The pipeline is technically complete, but the current dataset scale and generic pretrained features limit biological mechanism recovery. Small supervised fine-tuning is not sufficient under compound-holdout validation.
+The benchmark supports a representation-centered interpretation. The pipeline is technically complete, but the current dataset scale and generic pretrained features limit biological mechanism recovery. Small supervised fine-tuning is not sufficient under compound-holdout validation. The morphology-chemistry comparison adds a second interpretation layer by showing where cellular phenotype similarity agrees or disagrees with molecular structure similarity.
 
 The next meaningful improvements require one of the following:
 

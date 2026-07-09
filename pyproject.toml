@@ -22,7 +22,8 @@ dependencies = [
   "umap-learn",
   "PyYAML",
   "tqdm",
-  "pillow"
+  "pillow",
+  "rdkit"
 ]
 
 [project.optional-dependencies]
@@ -45,6 +46,7 @@ aggregate-compound-fingerprints = "cell_painting_profiling.embeddings.aggregate:
 run-compound-retrieval = "cell_painting_profiling.embeddings.run_retrieval:main"
 compare-cell-painting-experiments = "cell_painting_profiling.analysis.compare_experiments:main"
 generate-cell-painting-result-figures = "cell_painting_profiling.analysis.visualize_results:main"
+compare-morphology-chemistry = "cell_painting_profiling.analysis.morphology_chemistry:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

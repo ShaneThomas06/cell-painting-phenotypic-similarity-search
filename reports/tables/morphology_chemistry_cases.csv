@@ -1,0 +1,5 @@
+compound_a_id,compound_a_name,compound_a_mechanism,compound_b_id,compound_b_name,compound_b_mechanism,same_mechanism,morphology_similarity,chemical_similarity,morphology_rank,chemical_rank,morphology_chemistry_gap,case_type
+BRD-K12511835-003-01-2,BMS-863233,CDC inhibitor,BRD-K66430217-001-03-8,KH-CB19,CDC inhibitor,True,0.9422979521760269,0.08045977011494253,2.0,79.0,0.8618381820610843,"morphologically similar, chemically dissimilar"
+BRD-K66401437-001-03-3,THZ1,CDK inhibitor,BRD-K85606544-001-09-1,neratinib,EGFR inhibitor,False,0.5823818629172055,0.33035714285714285,64.0,1.0,0.25202472006006266,"chemically similar, morphologically dissimilar"
+BRD-K12511835-003-01-2,BMS-863233,CDC inhibitor,BRD-K66430217-001-03-8,KH-CB19,CDC inhibitor,True,0.9422979521760269,0.08045977011494253,2.0,79.0,0.8618381820610843,"same mechanism, high morphology"
+BRD-K44227013-001-08-0,ponatinib,Bcr-Abl kinase inhibitor,BRD-K87632963-001-05-9,GNF-5,Bcr-Abl kinase inhibitor,True,0.5255856985363756,0.20192307692307693,81.0,5.0,0.3236626216132987,"same mechanism, low morphology"
