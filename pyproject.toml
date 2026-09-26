@@ -12,22 +12,22 @@ authors = [
   { name = "Shane Thomas" }
 ]
 dependencies = [
-  "torch",
-  "torchvision",
-  "pandas",
-  "numpy",
-  "scikit-learn",
-  "matplotlib",
-  "seaborn",
-  "umap-learn",
-  "PyYAML",
-  "tqdm",
-  "pillow",
-  "rdkit"
+  "torch>=2.2,<3",
+  "torchvision>=0.17,<1",
+  "pandas>=2.1,<3",
+  "numpy>=1.26,<3",
+  "scikit-learn>=1.4,<2",
+  "matplotlib>=3.8,<4",
+  "seaborn>=0.13,<1",
+  "umap-learn>=0.5.5,<0.6",
+  "PyYAML>=6,<7",
+  "tqdm>=4.66,<5",
+  "pillow>=10,<13",
+  "rdkit>=2023.9,<2027"
 ]
 
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = ["pytest>=8,<9", "ruff>=0.6,<1"]
 
 [project.scripts]
 inspect-cell-painting-metadata = "cell_painting_profiling.data.inspect_metadata:main"
@@ -55,3 +55,10 @@ where = ["src"]
 testpaths = ["tests"]
 pythonpath = ["src"]
 
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
