@@ -129,3 +129,8 @@ reports/figures/morphology_chemistry_case_studies.png
 - JUMP Cell Painting Consortium
 - Cell Painting: a decade of discovery and innovation in cellular imaging
 - Image-based profiling for drug discovery
+
+## Clean-clone smoke checks
+
+See [reproducibility instructions](docs/reproducibility.md) for the minimal
+installation, tests, linting, and command checks used in CI.

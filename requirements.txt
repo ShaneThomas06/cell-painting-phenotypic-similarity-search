@@ -1,13 +1,2 @@
-torch
-torchvision
-pandas
-numpy
-scikit-learn
-matplotlib
-seaborn
-umap-learn
-PyYAML
-tqdm
-pillow
-pytest
-rdkit
+# Dependency definitions live in pyproject.toml.
+-e .[dev]
